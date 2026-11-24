@@ -12,6 +12,8 @@ The rules live in the `renze-tdd` skill, section "Commits". In short:
 
 `plugins/renze-workflow/hooks/block-human-git.mjs` runs as a `PreToolUse` hook. It blocks `git push`, `git merge`, `gh pr merge`, and completing a PR with `az repos`. It allows `git commit`.
 
+One exception: the hook lets the subagent types listed in the `RENZE_PUSH_GRANTED_AGENTS` environment variable run a plain `git push`. The list is comma-separated, for example `my-plugin:fixer`. Set it in the `env` block of your settings.json. The hook identifies a subagent by the `agent_type` field that Claude Code adds to hook input for subagent tool calls. The main session never gets the grant. Force push (`-f`, `--force`, `--force-with-lease`, `+refspec`) stays blocked for everyone.
+
 The hook matches the whole command text, so a command that only mentions a blocked action (for example, in a heredoc) is blocked too.
 
 ## How to test it
