@@ -35,7 +35,19 @@ Never continue automatically. Do not begin the next test, slice, refactor, or fo
 
 - When I approve an iteration, commit its diff unless it is already committed. Do not commit before approval.
 - Only an explicit approval of this iteration counts. An answer to a different question (a plan choice, a PR split, "sure, 3") is not approval of the next slice; ask again.
-- Never push, merge, or complete a pull request.
+- Never push, merge, or complete a pull request. The only exception is an agent the hook grants push to (see `docs/commit-policy.md`).
+
+### Revert commits
+
+Never keep git's default revert header. Make it Conventional, with the scope of the reverted commit, and keep the default text after the prefix:
+
+```text
+revert(api): Revert "feat(api): add thing"
+
+This reverts commit <full sha>.
+```
+
+Use `git revert --no-commit <sha>`, then `git commit` with that message. This applies to every revert, not only in a TDD loop.
 
 ### Header
 
