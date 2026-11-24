@@ -8,7 +8,9 @@ My personal Claude Code marketplace, holding my development workflow as skills.
 | `renze-architecture` | Architecture rules, the heavy-collaborator test, refactoring checklist, smell reporting |
 | `renze-working-agreement` | Evidence before claims, exact scope, look before asking, plans, writing |
 
-A `PreToolUse` hook blocks `git commit`, `git push`, `git merge`, `gh pr merge`, and completing a PR with `az repos`. Commits belong to me.
+The agent commits approved iterations locally, one commit per artifact scope. A `PreToolUse` hook blocks `git push`, `git merge`, `gh pr merge`, and completing a PR with `az repos`.
+
+Test the hook with `node --test plugins/renze-workflow/hooks/block-human-git.test.mjs`.
 
 ## Install
 

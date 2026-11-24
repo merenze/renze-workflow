@@ -10,7 +10,7 @@ Follow this loop by default unless I explicitly say otherwise.
 ## Precedence over other skills
 
 - This loop replaces the caveman workflow skills (`lean-build`, `surgical-patch`, `safe-refactor`, `verify-and-stop`) for the same jobs. Use their checks only if they fit inside this loop.
-- The commit header format below replaces `caveman-commit` and Conventional Commits.
+- The commit rules below replace `caveman-commit`.
 - The approval pause summary is required even when a terse voice (caveman) is active.
 - Subagents do not see this skill. Do not dispatch an iteration to a subagent unless the brief includes the approval pause.
 
@@ -23,17 +23,34 @@ Follow this loop by default unless I explicitly say otherwise.
 5. Run the relevant tests again and confirm they pass.
 6. Refactor code added in this iteration or earlier in the current PR, using the `renze-architecture` Refactoring checklist. Look specifically for chunks worth extracting into a well-named function, repeated literals worth a named constant, and hand-rolled wiring the framework already provides. Re-run the tests.
 7. Summarize: tests added or changed, implementation added or changed, use-case step completed, and what the refactor step considered and changed (or why it changed nothing).
-8. Suggest a commit header.
+8. Propose the commits, split by scope (see Commits).
 9. **Stop and wait for approval.**
+10. On approval, make the proposed commits, then start the next iteration.
 
 Never pause between red and green. Red, green, and refactor all complete before the pause.
 
 Never continue automatically. Do not begin the next test, slice, refactor, or follow-up until I approve.
 
-## Commits belong to me
+## Commits
 
-- Never run `git commit`, `git push`, merge, or complete a pull request. Leave the change in the working tree, suggest the header, and stop.
+- When I approve an iteration, commit its diff unless it is already committed. Do not commit before approval.
 - Only an explicit approval of this iteration counts. An answer to a different question (a plan choice, a PR split, "sure, 3") is not approval of the next slice; ask again.
+- Never push, merge, or complete a pull request.
+
+### Header
+
+Use Conventional Commits: `type(scope): subject`.
+
+- The scope names the artifact the change belongs to: most often an application or library in the repository.
+- The scope may be shorter than the artifact's directory name, but it must identify one artifact without doubt. Reuse the scope that `git log` already uses for that artifact.
+- I cherry-pick commits by scope to control release order. A commit with a scope must touch only that artifact.
+
+### Splitting by scope
+
+- If the diff touches several artifacts, make one commit per artifact, each with its own scope.
+- If one file holds hunks for several artifacts (for example, a doc updated for two libraries), split the file's hunks across those commits. Stage hunks without an interactive command: write the hunks for one scope to a patch and apply it with `git apply --cached`.
+- If a change cannot be split because one hunk affects several artifacts (for example, a shared pipeline or CI template), put it in one commit with no scope: `type: subject`.
+- After committing, confirm with `git status` that nothing from the approved diff is left uncommitted.
 
 ## Ready means proven
 
@@ -98,21 +115,22 @@ Summary:
 - Implemented ...
 - Verified relevant tests pass.
 
-Suggested commit header:
+Proposed commits:
 <commit header here>
+- <files or hunks in this commit>
 
-Awaiting approval to continue.
+Awaiting approval to commit and continue.
 ```
 
-The commit header must be a fenced code block tagged `text`. It has no Conventional Commit prefix or scope, and is never a file link.
+Each commit header must be a fenced code block tagged `text`, never a file link. List under it the files, or the hunks of a split file, that the commit holds.
 
-Derive the header from the actual uncommitted diff at the pause, not from the session's topic. If the diff contains a breaking change, say so in the summary and name the contract it breaks. Never call a change breaking without naming that contract.
+Derive the headers from the actual uncommitted diff at the pause, not from the session's topic. If the diff contains a breaking change, say so in the summary and name the contract it breaks. Never call a change breaking without naming that contract.
 
 Acceptable:
 
 ````markdown
 ```text
-extract merge logic into named helpers in normalizer
+refactor(normalizer): extract merge logic into named helpers
 ```
 ````
 
