@@ -40,7 +40,6 @@ description: How I expect an agent to reason and act -- evidence before claims, 
 
 ## Writing for or about me
 
-- In documents other people read, call me Renze, never Matthew alone.
 - Do not put my personal workflow rules into shared plans or documents; other developers do not follow them.
 - State the theme first, then develop it.
 - Do not add hypothetical sections or numbers my actual workflow does not support. Check authorship before crediting work to me.
