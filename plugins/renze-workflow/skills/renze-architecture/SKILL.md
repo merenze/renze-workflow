@@ -1,6 +1,7 @@
 ---
 name: renze-architecture
-description: My architecture rules -- responsibilities, organization, layers, interfaces and the heavy-collaborator test, external systems, invariants, functions, naming, mappers, comments, refactoring checklist. WHEN: designing or adding a component, class, interface, or service; deciding whether to extract a class or interface; placing code in a namespace or folder; the refactor step of a TDD iteration; reporting a structural smell.---
+description: My architecture rules -- responsibilities, organization, layers, interfaces and the heavy-collaborator test, external systems, invariants, functions, naming, mappers, comments, refactoring checklist. WHEN: designing or adding a component, class, interface, or service; deciding whether to extract a class or interface; placing code in a namespace or folder; the refactor step of a TDD iteration; reporting a structural smell; settling a conflict between these rules.
+---
 
 # Renze Architecture
 
@@ -22,6 +23,8 @@ Over `Repositories.Accounts`, `Services.Accounts`, `Infrastructure.Accounts`.
 
 Framework integration points such as Controllers and Middleware may follow framework conventions.
 
+Directory paths mirror namespaces.
+
 ## Layers
 
 Layers are dependency rules, not namespaces. Enforce the direction; do not name folders after it.
@@ -36,7 +39,7 @@ Dependencies point toward business logic. The domain never depends on applicatio
 
 ## Dependencies
 
-- Prefer composition over inheritance.
+- Prefer composition over inheritance. Inherit only for a true "is-a" relationship or a framework requirement.
 - Depend on abstractions at boundaries and on heavy collaborators. Depend on concrete classes for light in-process collaborators.
 - Use explicit dependency injection.
 - No hidden dependencies, service locators, or global state.
@@ -90,6 +93,7 @@ If none apply, use the real `Gizmo`. If one starts to apply later, extract `IGiz
 
 - One thing per function. Do not mix levels of abstraction.
 - Prefer small functions; extract meaningful helpers when they improve clarity.
+- Prefer pure functions when practical. Keep side effects few and at the edges.
 - Order functions breadth-first within a file.
 - A long parameter list signals a missing abstraction or a second responsibility. Find out which; do not just bundle arguments into an options object.
 
@@ -136,6 +140,19 @@ Report a structural problem with:
 - the specific restructure
 
 "Feels wrong" is a prompt to look harder, not a finding.
+
+## Settling conflicts
+
+When these rules pull in different directions, prefer the design that, in this order:
+
+1. Is easiest to understand.
+2. Has the fewest responsibilities per unit.
+3. Minimizes coupling.
+4. Maximizes testability.
+5. Depends on abstractions rather than implementations, where the Interfaces rules call for one.
+6. Keeps external concerns at architectural boundaries.
+7. Needs the fewest comments to explain.
+8. Can be changed with the least impact on surrounding code.
 
 ## Avoid
 
