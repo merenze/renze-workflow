@@ -15,8 +15,14 @@ Test the hook with `node --test plugins/renze-workflow/hooks/block-human-git.tes
 ## Install
 
 ```text
-/plugin marketplace add C:/Users/mrenze/source/repos/renze-workflow
+/plugin marketplace add merenze/renze-workflow
 /plugin install renze-workflow@renze-workflow
 ```
+
+The hook needs Node.js on `PATH`. Without it, the hook fails and push and merge are not blocked.
+
+To work on the plugin, add the local clone instead: `/plugin marketplace add <path-to-clone>`.
+
+Bump `version` in `plugins/renze-workflow/.claude-plugin/plugin.json` and in `.claude-plugin/marketplace.json` when publishing changes, so installed copies update.
 
 The always-on pointers live in `~/.claude/CLAUDE.md` and `~/.claude/renze/ARCHITECTURE.AGENTS.md`. They name these skills so the skills trigger on every code change.
