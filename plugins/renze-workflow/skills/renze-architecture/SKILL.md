@@ -1,11 +1,10 @@
 ---
 name: renze-architecture
-description: Matthew Renze's architecture rules -- responsibilities, organization, layers, interfaces and the heavy-collaborator test, external systems, invariants, functions, naming, mappers, comments, refactoring checklist. WHEN: designing or adding a component, class, interface, or service; deciding whether to extract a class or interface; placing code in a namespace or folder; the refactor step of a TDD iteration; reporting a structural smell. Takes precedence over organization or plugin architecture skills where they conflict.
----
+description: My architecture rules -- responsibilities, organization, layers, interfaces and the heavy-collaborator test, external systems, invariants, functions, naming, mappers, comments, refactoring checklist. WHEN: designing or adding a component, class, interface, or service; deciding whether to extract a class or interface; placing code in a namespace or folder; the refactor step of a TDD iteration; reporting a structural smell.---
 
 # Renze Architecture
 
-Follow these rules unless there is a compelling reason not to. When this conflicts with an organization or plugin architecture skill, this skill wins; state the conflict in your summary.
+Follow these rules unless there is a compelling reason not to.
 
 ## Responsibilities
 
@@ -55,6 +54,12 @@ Do not create an interface just because a class exists, or just to mock a light,
 
 Prefer platform abstractions (e.g. `TimeProvider`) over custom ones.
 
+## Use what already exists
+
+- Prefer the framework's idiomatic mechanism over hand-rolled wiring: the Options pattern and injected options objects rather than raw values, DI-managed instances rather than static singletons, `IHttpClientFactory` or a shared `HttpClient` rather than one per call.
+- Prefer an upstream API's own capability (OData filtering, server-side queries, a stored procedure the design agreed on) over reimplementing it locally.
+- Before deleting a resource, trace its callers. A resource something still calls is in use.
+
 ### The heavy-collaborator test
 
 `Gadget` depends on `Gizmo`. Treat `Gizmo` as heavy, and introduce `IGizmo` with a test double, when any of these is true:
@@ -93,13 +98,17 @@ If none apply, use the real `Gizmo`. If one starts to apply later, extract `IGiz
 Name by responsibility: Repository, Importer, Formatter, Validator, Calculator, Mapper.
 Avoid: Manager, Helper, Utility, Processor, Service.
 
+Do not abbreviate names or add arbitrary prefixes. When a length limit forces an abbreviation, name the limit.
+
 ## Mappers
 
 Mappers translate between representations. No business rules, no persistence, no workflow orchestration.
 
 ## Comments
 
-Default to zero comments. First rename, extract, or restructure until the code explains itself.
+Default to zero comments. A comment is a failure to write sufficiently expressive code. First rename, extract, or restructure until the code explains itself.
+
+These rules apply equally to infrastructure and configuration: Terraform, YAML, pipeline definitions. Before keeping any comment, delete every clause the code already states or implies.
 
 Allowed only for a non-obvious why that code cannot express:
 

@@ -1,18 +1,17 @@
 ---
 name: renze-tdd
-description: Matthew Renze's strict red-green TDD loop with an approval pause after every iteration. WHEN: any code change -- implementing a feature or use-case step, fixing a bug, adding or changing tests, extending a component, choosing the next slice. Takes precedence over lean-build, surgical-patch, safe-refactor, and verify-and-stop.
+description: My strict red-green TDD loop with an approval pause after every iteration. WHEN: any code change -- implementing a feature or use-case step, fixing a bug, adding or changing tests, extending a component, choosing the next slice. Takes precedence over lean-build, surgical-patch, safe-refactor, and verify-and-stop.
 ---
 
 # Renze TDD
 
-Follow this loop by default unless Matthew explicitly says otherwise.
+Follow this loop by default unless I explicitly say otherwise.
 
 ## Precedence over other skills
 
 - This loop replaces the caveman workflow skills (`lean-build`, `surgical-patch`, `safe-refactor`, `verify-and-stop`) for the same jobs. Use their checks only if they fit inside this loop.
 - The commit header format below replaces `caveman-commit` and Conventional Commits.
 - The approval pause summary is required even when a terse voice (caveman) is active.
-- When an organization skill requires a verification artifact, record it in step 5: command, exit code, criterion met.
 - Subagents do not see this skill. Do not dispatch an iteration to a subagent unless the brief includes the approval pause.
 
 ## The iteration
@@ -22,12 +21,27 @@ Follow this loop by default unless Matthew explicitly says otherwise.
 3. Run the tests and confirm the new test(s) fail for the expected reason.
 4. Implement the **smallest change** needed to make those test(s) pass.
 5. Run the relevant tests again and confirm they pass.
-6. Refactor code added in this iteration or earlier in the current PR, using the `renze-architecture` Refactoring checklist. Re-run the tests.
-7. Summarize: tests added or changed, implementation added or changed, use-case step completed.
+6. Refactor code added in this iteration or earlier in the current PR, using the `renze-architecture` Refactoring checklist. Look specifically for chunks worth extracting into a well-named function, repeated literals worth a named constant, and hand-rolled wiring the framework already provides. Re-run the tests.
+7. Summarize: tests added or changed, implementation added or changed, use-case step completed, and what the refactor step considered and changed (or why it changed nothing).
 8. Suggest a commit header.
 9. **Stop and wait for approval.**
 
-Never continue automatically. Do not begin the next test, slice, refactor, or follow-up until Matthew approves.
+Never pause between red and green. Red, green, and refactor all complete before the pause.
+
+Never continue automatically. Do not begin the next test, slice, refactor, or follow-up until I approve.
+
+## Commits belong to me
+
+- Never run `git commit`, `git push`, merge, or complete a pull request. Leave the change in the working tree, suggest the header, and stop.
+- Only an explicit approval of this iteration counts. An answer to a different question (a plan choice, a PR split, "sure, 3") is not approval of the next slice; ask again.
+
+## Ready means proven
+
+Do not call an iteration, PR, or change done or ready until:
+
+- the tests pass, and any CI or build validation you can see is green
+- the diff is visible where I will look: the right repo, submodule, and branch
+- the production entry point actually invokes the new behavior, not only the tests
 
 ## Choosing the next slice
 
@@ -39,7 +53,7 @@ Choose the next step based on the **next logical action in the application use c
 
 ### Backend before frontend
 
-If the next step needs both backend and frontend changes, do the backend in this iteration and the frontend in the next. Combine them only when Matthew explicitly asks.
+If the next step needs both backend and frontend changes, do the backend in this iteration and the frontend in the next. Combine them only when I explicitly ask.
 
 ### Dependencies before callers
 
@@ -55,7 +69,12 @@ If `Gadget.DoThis()` must call `Gizmo.DoThis()` and then `Gizmo.DoThat()`:
 ## Scope control
 
 - Make the smallest change that satisfies the current failing test(s).
+- Add no member, field, parameter, dependency, or test that the current failing test does not exercise. An unused logger field is scope creep.
+- Do not test purely declarative configuration (one column mapping, one attribute) unless every sibling would get the same test.
+- Before proposing a slice, name the use-case or card requirement it satisfies. If it satisfies none, do not propose it. Verification that belonged in an earlier slice is not a slice of its own.
 - No speculative abstractions, no unrelated refactors, no future workflow steps.
+- Do not propose a standalone refactor PR or a large redesign mid-task. Fold small fixes into the current slice; write larger ideas up as a deferred proposal.
+- A fix is never too small for the loop. A one-line bug fix is still a full slice with a red test.
 - If you notice other useful work, mention it in the summary. Do not do it before approval unless the current tests need it.
 
 ## Testing
@@ -86,6 +105,8 @@ Awaiting approval to continue.
 ```
 
 The commit header must be a fenced code block tagged `text`. It has no Conventional Commit prefix or scope, and is never a file link.
+
+Derive the header from the actual uncommitted diff at the pause, not from the session's topic. If the diff contains a breaking change, say so in the summary and name the contract it breaks. Never call a change breaking without naming that contract.
 
 Acceptable:
 

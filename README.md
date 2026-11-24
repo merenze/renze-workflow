@@ -1,11 +1,14 @@
 # renze-workflow
 
-Personal Claude Code marketplace holding Matthew Renze's development workflow as skills.
+My personal Claude Code marketplace, holding my development workflow as skills.
 
 | Skill                | Purpose                                                                                 |
 |----------------------|-----------------------------------------------------------------------------------------|
 | `renze-tdd`          | Strict red-green-refactor loop with an approval pause after every iteration             |
 | `renze-architecture` | Architecture rules, the heavy-collaborator test, refactoring checklist, smell reporting |
+| `renze-working-agreement` | Evidence before claims, exact scope, look before asking, plans, writing |
+
+A `PreToolUse` hook blocks `git commit`, `git push`, `git merge`, `gh pr merge`, and completing a PR with `az repos`. Commits belong to me.
 
 ## Install
 
