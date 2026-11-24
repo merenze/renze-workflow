@@ -1,0 +1,11 @@
+{
+  "name": "renze-workflow",
+  "version": "0.1.0",
+  "description": "My development workflow: strict red-green TDD with an approval pause after every iteration, workflow-driven vertical slices, and my architecture rules for responsibilities, layering, interfaces, invariants, and naming.",
+  "author": {
+    "name": "Matthew Renze",
+    "url": "https://github.com/merenze"
+  },
+  "homepage": "https://github.com/merenze/renze-workflow",
+  "license": "UNLICENSED"
+}

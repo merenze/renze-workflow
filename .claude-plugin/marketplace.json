@@ -1,0 +1,21 @@
+{
+  "name": "renze-workflow",
+  "owner": {
+    "name": "Matthew Renze",
+    "url": "https://github.com/merenze"
+  },
+  "metadata": {
+    "description": "Personal Claude Code marketplace for my development workflow: strict TDD with approval gates and my architecture rules.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "renze-workflow",
+      "source": "./plugins/renze-workflow",
+      "description": "Strict red-green TDD with an approval pause after every iteration, workflow-driven slicing, and my architecture rules.",
+      "version": "0.1.0",
+      "category": "workflow",
+      "keywords": ["tdd", "architecture", "workflow", "personal"]
+    }
+  ]
+}
